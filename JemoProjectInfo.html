@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@200&family=Ubuntu+Sans:ital,wdth,wght@0,75..100,100..800;1,75..100,100..800&display=swap" rel="stylesheet">
+
+    <link href="Css/Global.css" rel="stylesheet">
+</head>
+
+<body class="bkgColorDSGray ubsans-normal" style="color: antiquewhite; ">
+    <div class="HeaderCont">
+        <a href="index.html"><div class = "HeaderItem">Home</div></a>
+        <a href="MyCats.html"><div class = "HeaderItem">My Cats</div></a>
+        <a href="AboutMe.html"><div class = "HeaderItem">About Me</div></a>
+        <a href="MyWork.html"><div class = "HeaderItem">My Work</div></a>
+    </div>
+    <br>
+    <br>
+    <br>
+    <div class = "simpleFlexCont" style="margin-left: 2%; margin-right: 2%;">
+        <!-- Right -->
+    <div style="width: 50%;">
+
+        
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+
+            <h1>
+                About
+            </h1>
+            <p>
+                Finding Jemo is a 2D platformer game that I started developing in late 2023 and stopped updating around April of 2024. The game is about 90% completionwith no intentions on finishing it, the project files can be found on the itch.io page here: <a style="text-decoration: underline;" href="https://ricowilliams.itch.io/finding-jemo">Finding Jemo.</a>
+                The story follows the journey of a young girl as she travels through a castle to save her friend the dark wizard Jemo, along the way she meets a variety of characters who help her on her journey with a variety of skills and items to be used to her aid. Ok I'll come clean, the story is a bit of a joke for me and some friends, but thats all this project was meant to be - a fun exercise while I worked on building these skills that I had never even thought about before. Therefore, even if the project never gets completed I still see it as a success.
+            </p>
+            
+        </div>
+        
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 1
+            </h1>
+            <p>
+                Level 1 takes place in a massive library at the base of the castle featuring fragile platforms that will break if you run on them too long. The technology behind this meant having a new tilemap gameobject for each platform. In hindsight this couldve gotten out of hand, but it never got too tedious for me. As for the tiles and art in this level I'm pretty satisfied with how it looks.
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo1.1.png">
+                <img src="JemoImages/Jemo1.3.png">
+                <img src="JemoImages/Jemo1.5.png">
+            </div>
+            <br>
+
+        </div>
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 3
+            </h1>
+            <p>
+                Level 3 is in an art museum featuring a new character Jrandma, this gives you the ability to wall jump. It was fairly simple to implement, essentially all it is is the ground check but done horizontally at a couple points to see if you are on the wall. Overall though this level didn't add too much complication.
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo3.1.png">
+                <img src="JemoImages/Jemo3.2.png">
+
+            </div>
+            <br>
+
+        </div>
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 4
+            </h1>
+            <p>
+                Level 4 is a cursed/overgrown garden area with overgrown vines and a witch. The feature this level introduces is an item called "spilk" a mixture of sprite and milk that my friend unironically drinks, but in game it is brewed by the (helpful) witch and it replenishes your dash and offers you a double jump when picked up mid air. This item really oppened up a lot of really fun level designs where you have to just go and it felt really rewarding to the player. One critque I have is the background is pretty boring - just a tree in the background, I couldve added more foliage layers or similar to spice things up. I am quite proud of the sprites and other small bits for this level.
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo4Sprites.png">
+                <img src="JemoImages/Jemo4.1.png">
+                <img src="JemoImages/Jemo4.2.png">
+                <img src="JemoImages/Jemo4.3.png">
+            </div>
+            <br>
+        </div>
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 7
+            </h1>
+            <p>
+                Level 7 contains one level, the final level, where you find Jemo and fight to break the purple crystals to free him from the evil spell he was placed under. While platforming he attacks you with varying attacks ramping up in speed the more crystals you break. It is by far my favorite level I could go on and on about the parallaxing and lights and all the sprites, but I'll just include a video instead.
+                <br><a style="text-decoration: underline;" src="https://www.youtube.com/watch?v=68D2OV5UIxY">Video</a>
+            </p>
+        </div>
+            
+
+    </div>
+
+    <!-- Left -->
+    <div style="width: 50%;">
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+
+            <h1>
+                Challenges
+            </h1>
+            <p>
+                The goal of this project was to familiarize myself more with unity c# and game development as a whole, so a lot of the challenges were very general topics. To get into I think the biggest things I learned from this project was how to navigate the unity scripting api, how to research/find specific components to use, how to draw and animate pixel art (sorta), level design, and various common scripting problems/unity bugs.
+            </p>
+            
+        </div>
+
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 0
+            </h1>
+            <p>
+                Level 0 features a tutorial area with text boxes teaching the basic controls, this is the area game where I learned the basic workflow of tilemaps, animator components, adding a key mechanic, and how to make a parallax background. I also spent a lot of time before this working on character movement, things like raycasting to check if we are on the ground, coyote time, and ensuring smooth movement on tiled colliders. As for the level design itself its placed in a cave on the beach that leads to a secret entrance to the castle library. 
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo0.1.png">
+                <img src="JemoImages/Player.png">
+                <img src="JemoImages/Jemo0.3.png">
+            </div>
+            <br>
+        </div>
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 2
+            </h1>
+            <p>
+                Level 2 features a cave/mining area introducing a character Jild, a miner in the castle (its a weird castle ok.) It also introduces a new dash mechanic, this dash also allows you to pass through the black goop thats seen throughout the levels. The goop also has its own layer in the tilemap but just the one for all the goop, and getting the player to pass through goop when dashing wasnt too difficult all it was adding a check for isDashing while in the goop trigger. 
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo2.1.png">
+                <img src="JemoImages/Jemo2.2.png">
+                <img src="JemoImages/Jemo2.4.png">
+            </div>
+            <br>
+    
+        </div>
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 5
+            </h1>
+            <p>
+                Level 5 is a kitchen featuring Jaylynn and chickens!!! These chickens are easily my favorite thing I added to the game, while the levels in the section arent super fun (a lot of the jumps were too percise) the chickens are just really silly, fun, and cute. They act as a sort of glid mechanic when holding down space in the air you can fall slower, but once you release it the chickens dont disapear instead they will walk around the level until the accidentally fall onto a spike. This lead to one fun downward section that I havent been able to do yet but allowing you to slow your fall made it more than possible to be done. Ultimately though I just had a blast animating and programming the AI for these silly goobers.
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo5Sprites.png">
+                <img src="JemoImages/Jemo5.2.png">
+                <img src="JemoImages/Jemo5.4.png">
+            </div>
+            <br>
+        </div>
+        <div class = "BorderLightGrey2" style = "text-align: center;">
+            <h1>
+                Level 6
+            </h1>
+            <p>
+                Level 6 is supposed to be the kings throne room however it is the most under developed part of the game. It features a lever mechanic that moves these platforms that often act as doors but are actually rideable platforms that add their velocity onto your own. While most of the art for this level isnt there it does feature one of my favorite levels where you have to ride and follow a moving platform all the way to the end while clearing obstacles.
+            </p>
+            <div class="scroll-container">
+                <img src="JemoImages/Jemo6.2.png">
+                <img src="JemoImages/Jemo6.4.png">
+            </div>
+            <br>
+
+    </div>  
+    
+
+
+</div>
+
+
+    
+</body>
