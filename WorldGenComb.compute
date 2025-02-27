@@ -1,0 +1,190 @@
+#pragma kernel NoiseIslandCircularLinear
+#pragma kernel MeshGen
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+
+int _Width;
+// float _Seed;
+StructuredBuffer<float2> _Offsets;
+int _Octaves;
+float _Lacunarity;
+float _Persistance;
+float _IslandSize;
+float _Zoom;
+RWTexture2D<float4> Result;
+// RWStructuredBuffer<float> _max
+
+float2 unity_gradientNoise_dir(float2 p)
+{
+    p = p % 289;
+    float x = (34 * p.x + 1) * p.x % 289 + p.y;
+    x = (34 * x + 1) * x % 289;
+    x = frac(x / 41) * 2 - 1;
+    return normalize(float2(x - floor(x + 0.5), abs(x) - 0.5));
+}
+
+float unity_gradientNoise(float2 p)
+{
+    float2 ip = floor(p);
+    float2 fp = frac(p);
+    float d00 = dot(unity_gradientNoise_dir(ip), fp);
+    float d01 = dot(unity_gradientNoise_dir(ip + float2(0, 1)), fp - float2(0, 1));
+    float d10 = dot(unity_gradientNoise_dir(ip + float2(1, 0)), fp - float2(1, 0));
+    float d11 = dot(unity_gradientNoise_dir(ip + float2(1, 1)), fp - float2(1, 1));
+    fp = fp * fp * fp * (fp * (fp * 6 - 15) + 10);
+    return lerp(lerp(d00, d01, fp.y), lerp(d10, d11, fp.y), fp.x);
+}
+
+float Unity_GradientNoise_float(float2 UV)
+{
+    return unity_gradientNoise(UV) + 0.5;
+}
+
+float Unity_InverseLerp_float(float A, float B, float T)
+{
+    return (T - A)/(B - A);
+}
+
+float fallOffLinearCircular(float h, uint3 id){
+    float d = distance(id.xy, float2(_Width/((uint)2),_Width/((uint)2)));
+    return smoothstep(0,_IslandSize,d)*h;
+}
+
+
+
+[numthreads(8,8,1)]
+void NoiseIslandCircularLinear (uint3 id : SV_DispatchThreadID)
+{
+
+    // if(id.x==0&&id.y==0){
+    //     return;
+    // }
+    float height = 0;
+    float freq = 1;
+    float amp = 1;
+    float maxHeight=0;
+
+    for (int i = 0; i < _Octaves; i++){
+        float targetX = id.x/_Zoom*freq+_Offsets[i].x;
+        float targetY = id.y/_Zoom*freq+_Offsets[i].y;
+
+        height = height + clamp(Unity_GradientNoise_float(float2(targetX, targetY)),0,1)*amp;
+        maxHeight = maxHeight + amp;
+        freq = freq * _Lacunarity;
+        amp = amp * _Persistance;
+    }
+
+    float d = distance(float2(_Width/((uint)2),_Width/((uint)2)),id.xy);
+    
+    // height = fallOffLinearCircular(height, id);
+    height = clamp(Unity_InverseLerp_float(_IslandSize*_Width/(uint)2,0,d),0,1)*height;
+
+    if(Result[uint2(0,0)].w==1||Result[uint2(0,0)].w<height/(maxHeight)){
+        Result[uint2(0,0)]=float4(0,0,0,height/(maxHeight));
+    }
+
+    Result[id.xy] = float4(height/(maxHeight),height/(maxHeight),height/(maxHeight),1);
+    // Result[id.xy] = float4((id.x+id.y)/16.0f,id.x/2.0f,id.x/2.0f,1);
+    // Result[id.xy] = float4(d,d,d,d);
+}
+
+
+// Each #kernel tells which function to compile; you can have many kernels
+
+
+
+
+
+
+
+
+
+
+// Create a RenderTexture with enableRandomWrite flag and set it
+// with cs.SetTexture
+// struct VertexInfo{
+//     float3 position;
+//     float3 normal;
+//     float2 uv;
+// };
+
+RWStructuredBuffer<float3> _vPos; 
+RWStructuredBuffer<float3> _vNorm; 
+RWStructuredBuffer<float2> _vUv; 
+RWStructuredBuffer<int> _Triangles;
+
+// Texture2D<float4> _Noise;
+// SamplerState sampler_Noise;
+int _PointWidth;
+float _WorldSize;
+
+float HeightMapEq(float x){
+    // return -2 + 41.5*x - 200.8333*(x*x) + 412.5*(x*x*x) - 229.1667*(x*x*x*x); // DESMOS TIME YOU NEED A NEW FUNCTION GANG THIS ONES ACTUaLLY SHIT AND IS ALL WRONG NEVER TRUSTING THAT SHITTY ASS CURVE FITTER WEBSITE AGAIN
+    // float sqrtX = sqrt(x);
+    x=Unity_InverseLerp_float(0, 0.5665415,x);
+    return -30 * x*x*x + 70 * x*x - 3;
+}
+
+// void InsertTriangleTopLeft(int TriangleID, uint3 id){
+//     _Triangles[TriangleID*3] = id.x + (id.y-1)*_PointWidth;
+//     _Triangles[TriangleID*3+1] = id.x + id.y*_PointWidth;
+//     _Triangles[TriangleID*3+2] = (id.x-1) + id.y*_PointWidth;
+// }
+
+// void InsertTriangleBotRight(int TriangleID, uint3 id){
+//     _Triangles[TriangleID*3] = id.x + id.y*_PointWidth;
+//     _Triangles[TriangleID*3] = (id.x+1) + id.y*_PointWidth;
+//     _Triangles[TriangleID*3] = id.x + (id.y+1)*_PointWidth;
+
+// }
+
+void InsertQuadTris(uint3 id){      //CounterClockwise cause unity is dumb and stupid and dumb and stupid and dumb and a liar
+    //TRI ONE
+    _Triangles[(((int)id.x+(int)id.y*_PointWidth)*2 - (int)id.y*2)*3+2]=((int)id.x+(int)id.y*_PointWidth);
+    _Triangles[(((int)id.x+(int)id.y*_PointWidth)*2 - (int)id.y*2)*3+1]=(((int)id.x+1)+(int)id.y*_PointWidth);
+    _Triangles[(((int)id.x+(int)id.y*_PointWidth)*2 - (int)id.y*2)*3]=((int)id.x+((int)id.y+1)*_PointWidth);
+
+    //TRI TWO
+    _Triangles[(((int)id.x+(int)id.y*_PointWidth)*2 - (int)id.y*2)*3+5]=(((int)id.x+1)+(int)id.y*_PointWidth);
+    _Triangles[(((int)id.x+(int)id.y*_PointWidth)*2 - (int)id.y*2)*3+4]=(((int)id.x+1)+((int)id.y+1)*_PointWidth);
+    _Triangles[(((int)id.x+(int)id.y*_PointWidth)*2 - (int)id.y*2)*3+3]=((int)id.x+((int)id.y+1)*_PointWidth);
+}
+
+[numthreads(8,8,1)]
+void MeshGen (uint3 id : SV_DispatchThreadID)
+{
+    if((int)id.x>=_PointWidth||(int)id.y>=_PointWidth){
+        return;
+    }
+
+    
+    // float height = _Noise.SampleLevel(sampler_Noise,uint2(id.x,id.y),0).y;
+    float height = Result[uint2(id.x, id.y)].x;
+    height = HeightMapEq(height);
+    _vPos[id.x+id.y*_PointWidth]= float3(id.x*_WorldSize/_PointWidth,height,id.y*_WorldSize/_PointWidth);
+
+    
+    if((int)id.x<_PointWidth-1&&(int)id.x>0&&(int)id.y<_PointWidth-1&&(int)id.y>0){
+        float3 dx = float3(_WorldSize/_PointWidth, HeightMapEq(Result[uint2(id.x+1,id.y)].x)-HeightMapEq(Result[uint2(id.x-1,id.y)].x),0); // sus 2, y, 0
+        float3 dz = float3(0, HeightMapEq(Result[uint2(id.x,id.y+1)].x)-HeightMapEq(Result[uint2(id.x,id.y-1)].x),_WorldSize/_PointWidth); // sus 0, y, 2
+        _vNorm[id.x+id.y*_PointWidth] = normalize(cross(dx,dz))*-1;
+    }else{
+        _vNorm[id.x+id.y*_PointWidth] = float3(0,1,0);
+    }
+    _vUv[id.x+id.y*_PointWidth] = float2((float)id.x/_PointWidth, (float)id.y/_PointWidth);   //uvs not working?  GOD THERES SO MANY TYPE ERRORS
+
+    // _VertInfo[id.x+id.y*_PointWidth] = cv;
+
+    //NEW TRIANGLE CALCULATIONS CAUSE THE LAST ONES ACTUALLY COOKED ME LIKE I JUST LOST TO IT GGS GO NEXT
+    if((int) id.x<_PointWidth-1&&(int) id.y<_PointWidth-1){
+        InsertQuadTris(id);
+    }
+
+    // if((int)id.y>0&&(int)id.x>0){
+    //     InsertTriangleTopLeft(2*(id.x-1)+(2*_PointWidth-2)*(id.y-1)+1, id);
+    // }
+    // if((int)id.x<_PointWidth-1&&(int)id.y<_PointWidth-1){
+    //     InsertTriangleBotRight(2*((id.x)+(_PointWidth)*(id.y)-id.y*2),id); //<---- sus
+    // }
+
+}
