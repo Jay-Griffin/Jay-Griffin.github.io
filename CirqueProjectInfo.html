@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@200&family=Ubuntu+Sans:ital,wdth,wght@0,75..100,100..800;1,75..100,100..800&display=swap" rel="stylesheet">
+
+    <link href="Css/Global.css" rel="stylesheet">
+</head>
+
+<body class="bkgColorDSGray ubsans-normal" style="color: antiquewhite; ">
+    <div class="HeaderCont">
+        <a href="index.html"><div class = "HeaderItem">Home</div></a>
+        <a href="MyCats.html"><div class = "HeaderItem">My Cats</div></a>
+        <a href="AboutMe.html"><div class = "HeaderItem">About Me</div></a>
+        <a href="MyWork.html"><div class = "HeaderItem">My Work</div></a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class = "BorderLightGrey2 simpleFlexCont">
+        <div style="width: 45%;">
+            <h1>About</h1>
+            <p>
+                Cirque de la Morte is a multiplayer fast-paced action shooter rogue-like game, similar to ultrakill but with different classes and builds you can do. The game is set in a dystopian future, where you are seen as an expendable member of lower class used to entertain members of upper class as a gladiator. Your characters motivation is to try and use this as an opportunity to advance out of lower class. Its risky but you like many others see it as your only chance off the barren rock you grew up on. The game is set in space aboard one of the Circus cruisers here is where you start your journey and you return often to, buy upgrades, heal yourself, and talk to other npcs. Afterwards you are sent on assignments to various planets defeating waves enemies while earning points to be used for upgrades while doing so.
+            </p>
+        </div>
+        <div style="width: 45%;">
+            <h1><br></h1>
+            <img style="border-radius: 20px;"src="CirqueImages/SolarSystem.png">
+        </div>
+    </div>
+
+    <div class="BorderLightGrey2 simpleFlexCont">
+        <div style="width: 45%;">
+            <h1>The Lander</h1>
+            <p>This is the part of the game where players go to be transported to and from the ship and various arenas. When players are ready they enter a transport tube and wait while everyone also gets ready. While modeling this I realized I needed to make materials for it, which is something I hadn't done before - I had only gotten them from online. This sparked a side project where I modeled a crate and followed a tutorial on materials, which I think turned out great! One thing I picked up for a sort of "style" is to just turn the roughness down which gives it a flat type of style that I enjoy</p>
+        </div>
+        <div class="scroll-container" style="width: 45%;">
+            <img src="CirqueImages/Crate.png">
+            <img src="CirqueImages/Lander1.png">
+            <img src="CirqueImages/Lander2.png">
+            <img src="CirqueImages/Lander3.png">
+            <img src="CirqueImages/Lander4.png">
+        </div>
+    </div>
+    <div class="BorderLightGrey2 simpleFlexCont">
+        <div style="width: 45%;">
+            <h1>World Generation</h1>
+            <p>The world generation I use is based on perlin noise. Theres a really good video series on it by <a style="text-decoration: underline;" href="https://www.youtube.com/c/SebastianLague">Sebastian Lague</a>, if you don't know who that is I highly recommend checking him out. He is an extremely talented developer who just does random project, usually using unity. In his videos he covers things like lacunarity, persistence, and octaves for layering perlin noise appropriately. My implementation of it was fairly simple using a 2D for loop to loop over a grid of points and calculates that vertex's height after applying the respective amplitude from octaves and from a falloff map to give it an island shape. After a couple more loops setting up triangles and uvs I assign these to a mesh object and use .RecalculateNormals() to fix the lighting. This whole process happens in a coroutine to split the work over multiple frames and takes about 2.5 seconds to complete. The code can be found <a style="text-decoration: underline;" href="https://github.com/Jay-Griffin/Jay-Griffin.github.io/blob/main/World%20Builder.cs">here</a>.
+            <br>
+            While this worked I wanted it to be better, it was slow and a bit clunky so I knew I could improve it. This was when I learned about compute shaders to optimize code on the GPU, and after working on <a style="text-decoration: underline;" href="https://web.archive.org/web/20231016082125/https://blog.three-eyed-games.com/2018/05/03/gpu-ray-tracing-in-unity-part-1/">a raytracing scene</a> to learn more about compute shaders, I was ready to try it. It was broken down into two parts, the first part creates a height map where each pixel correlates to a vertex in the mesh, and the second part assigns the vertex data, triangle data, and normal data from that map. It had to be split into two parts in order to do the derivatives for the normal calculations. This reduced generation time down to about a tenth of a second, additional improvements to the falloff map made this new generated islands appear more round aswell. I also have grass and rock generation, but im currently looking into optimizations for those so I wont go into that right now. The code for the new world generation can be found <a href="https://github.com/Jay-Griffin/Jay-Griffin.github.io/blob/main/WorldGenComb.compute">here (compute shader)</a> and <a href="https://github.com/Jay-Griffin/Jay-Griffin.github.io/blob/main/WorldGenComb.cs">here (c# runner file)</a>.
+            </p>
+        </div>
+        <div style="width: 45%;">
+            <h1><br></h1>
+            <div class="scroll-container">
+                <img src="CirqueImages/HeightMap.png">
+                <img src="CirqueImages/RayTracing.png">
+                <img src="CirqueImages/BirdsEyeScreenGrab.png">
+                <img src="CirqueImages/OnGroundScreenGrab.png">
+            </div>
+        </div>
+    </div>
+    <div class="BorderLightGrey2 simpleFlexCont">
+        <div style="width:45%;">
+            <h1>Characters/Models</h1>
+            <p>Currently theres only one model I have completed, the player model. This was my first attempt actually modeling a character opposed to hard surfaces, so I learned a lot and Ill likely go back to working on it here soon but it was a LOT of fun to make and to see it in game (P.s. this was before I learned about how to make detailed materials so its basically just colored in). Im also including some references for a new character that I'm hopefully going to model in the next few weeks just depends on how busy I get with school!</p>
+        </div>
+        <div class="scroll-container" style="width: 45%;">
+            <img src="CirqueImages/ModelPlyaer.png">
+            <img src="CirqueImages/FrontProfile.png">
+            <img src="CirqueImages/SideProfile.png">
+        </div>
+    </div>
+
+</body>

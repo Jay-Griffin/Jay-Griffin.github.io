@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<head>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Briem+Hand:wght@200&family=Ubuntu+Sans:ital,wdth,wght@0,75..100,100..800;1,75..100,100..800&display=swap" rel="stylesheet">
+
+    <link href="Css/Global.css" rel="stylesheet">
+</head>
+
+<body class="bkgColorDSGray ubsans-normal" style="color: antiquewhite; ">
+    <div class="HeaderCont">
+        <a href="index.html"><div class = "HeaderItem">Home</div></a>
+        <a href="MyCats.html"><div class = "HeaderItem">My Cats</div></a>
+        <a href="AboutMe.html"><div class = "HeaderItem">About Me</div></a>
+        <a href="MyWork.html"><div class = "HeaderItem">My Work</div></a>
+    </div>
+    <br>
+    <br>
+    <br>
+
+    <div class = "BorderLightGrey2 simpleFlexCont">
+        <div style="width: 100%;">
+            <h1>About</h1>
+            <p>
+                This game was a simple game where you wake up in a maze while being hunted by the hit character Hatsune Miku. It was made as a bit of a joke game for halloween but there are still some parts I enjoyed and learned from, the whole game is based off of the swansea graveyard scene from Mouthwashing (I love that game so much). The big topics were largely 3d animations, improved maze generations, and enemy AI. As well as some lessons learned on character controllers, using additional light sources, and sounds. Another note is that if I had more time in the project I would've liked to write the fog shader myself (likely using RayMarching) but time didn't allow for that. A link to the finished game can be found <a style="text-decoration: underline;" href="https://ricowilliams.itch.io/hatsunefreaku">here.</a>
+            </p>
+        </div>
+    </div>
+
+    <div class = "BorderLightGrey2 simpleFlexCont">
+        <div style="width: 45%;">
+            <h1>Animations</h1>
+            <p>
+                Part of this project was learning to animate things in 3d. I have made 3d models before and a couple characters but I haven't really animated things in blender before, so that was one key thing I wanted to learn with this project. Realistically there is one animation, a crouch walk animation while Miku slinks around the maze in the fog. In actuality theres 2 more animations I made, an unused choking animation and a neck snap animation for when you get caught. In both these animations I had to stretch the arms un-naturally in order to make it look correct from the actual players perspective as you got grabbed. The choking animation is actually pretty good, I just opted for something quicker to be more of a scary jump-scare thing. The crouch walk turned out really smooth and I'm fairly proud of it! I had to add extra bones to the basic deform humanoid rig in order to get things like the skirt and hair to follow smoothly. Apart from those the rig was made using the rigify tool in blender and using the automatic fk and ik holds that it generates. This made the process really smooth and easy to get right, but its also something I would like to learn to make myself at some point for when I animate non-humanoid rigs.
+            </p>
+        </div>
+        <div style="width: 45%;">
+            <h1><br></h1>
+            <div class="scroll-container">
+                <img src="FreakuImages/CrouchDeform.png">
+                <img src="FreakuImages/CrouchRig.png">
+                <img src="FreakuImages/Choke.png">
+                <img src="FreakuImages/Snap.png">
+
+            </div>
+        </div>
+    </div>
+    <div class = "BorderLightGrey2 simpleFlexCont">
+        <div style="width: 45%;">
+            <h1>Maze/Other code</h1>
+            <p>The maze generation <a style="text-decoration: underline;" href="https://github.com/Jay-Griffin/Jay-Griffin.github.io/blob/main/MazeMaker.cs">script</a> uses a recursive algorithm that goes through a generated grid of cells, removing walls as it snakes around psuedo randomly until it has visited every cell in the maze. Then as a last layer of noise I loop over every wall in the maze and remove about 30% of them randomly. This an algorithm I've used before but my implementation of it has never been quite as smooth as this one went. I really enjoyed making the recursive algorithm however some of the other parts of actually connecting the code to the game got really tedious an unenjoyable. Additionally the extra lights that I used in some of the tiles cause issues with unitys render pipeline as it only allows for a max of 8 lights affecting an object at a time. This made it so some of the light sources weren't always appearing on the ground even when the player was right next to them causing them to flicker and be generally unreliable. To fix this I made a <a style="text-decoration: underline;" href="https://github.com/Jay-Griffin/Jay-Griffin.github.io/blob/main/Lights.cs">script</a> to add every light to a list after the maze was generated and then sort that list based on a lights distance to the player and whether or not it was in line of sight of the player, and then make sure that only 8 lights would be on at a time in the scene.
+            </p>
+        </div>
+        <div style="width: 45%;">
+            <h1><br></h1>
+            <div class="scroll-container">
+                <img src="FreakuImages/ExampleMaze.png">
+            </div>
+        </div>
+    </div>
+</body>
